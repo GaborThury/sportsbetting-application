@@ -1,6 +1,6 @@
 package com.epam.training.sportsbetting.ui;
 
-public class Printer {
+public class ConsolePrinter {
     public void printAskName() {
         System.out.println("What is your name?");
     }

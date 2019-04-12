@@ -2,13 +2,15 @@ package com.epam.training.sportsbetting.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
-public class SportEvent {
+@ToString
+public abstract class SportEvent {
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
