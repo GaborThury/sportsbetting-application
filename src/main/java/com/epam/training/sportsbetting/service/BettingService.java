@@ -6,7 +6,10 @@ import com.epam.training.sportsbetting.domain.Wager;
 
 import java.util.List;
 
-public class Service implements SportBettingService {
+public class BettingService implements SportBettingService {
+
+    private List<SportEvent> testDatas;
+
     @Override
     public void savePlayer(Player player) {
 
@@ -19,9 +22,12 @@ public class Service implements SportBettingService {
 
     @Override
     public List<SportEvent> findAllSportEvents() {
-        CreateTestDatas createTestDatas = new CreateTestDatas();
-        return createTestDatas.generateSportEvents();
+        if (testDatas == null) {
+            testDatas = CreateTestDatas.getInstance().generateSportEvents();
+        }
+        return testDatas;
     }
+
 
     @Override
     public void saveWager(Wager wager) {

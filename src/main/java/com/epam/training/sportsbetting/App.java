@@ -1,13 +1,15 @@
 package com.epam.training.sportsbetting;
 
+import com.epam.training.sportsbetting.domain.Bet;
 import com.epam.training.sportsbetting.domain.Player;
 import com.epam.training.sportsbetting.domain.Wager;
-import com.epam.training.sportsbetting.service.Service;
+import com.epam.training.sportsbetting.service.UserBetService;
+import com.epam.training.sportsbetting.service.BettingService;
 import com.epam.training.sportsbetting.service.SportBettingService;
 import com.epam.training.sportsbetting.ui.ConsolePrinter;
 import com.epam.training.sportsbetting.ui.ConsoleReader;
 import com.epam.training.sportsbetting.ui.IO;
-import com.epam.training.sportsbetting.ui.ReaderAndPrinter;
+import com.epam.training.sportsbetting.ui.BettingUI;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -29,10 +31,10 @@ public class App {
     public static void main(String[] args) {
         ConsolePrinter consolePrinter = new ConsolePrinter();
         ConsoleReader consoleReader = new ConsoleReader();
-        ReaderAndPrinter readerAndPrinter = new ReaderAndPrinter(consolePrinter, consoleReader);
-        Service service = new Service();
+        BettingUI bettingUI = new BettingUI(consolePrinter, consoleReader);
+        BettingService bettingService = new BettingService();
 
-        App app = new App(service, readerAndPrinter);
+        App app = new App(bettingService, bettingUI);
 
         app.createPlayer();
         app.play();
@@ -46,11 +48,7 @@ public class App {
 
     public void play(){
         io.printWelcomeMessage(player);
-        while (true) {
-            io.printBalance(player);
-            io.printOutcomeOdds(sportBettingService.findAllSportEvents());
-            if (handleUserBet() == 0) return;
-        }
+        handleUserBet();
 
     }
 
@@ -62,34 +60,30 @@ public class App {
         io.printResults(player, wagers);
     }
 
-    private int handleUserBet() {
+    private void handleUserBet() {
         ConsoleReader consoleReader = new ConsoleReader();
 
-        //TODO find bet by number
-        while (true) {
-            int userBetID = consoleReader.readUserBetNumber();
-            if (userBetID == 0) return 0;
+        while (player.getBalance().compareTo(BigDecimal.ZERO) != 0) {
+            io.printBalance(player);
+            io.printOutcomeOdds(sportBettingService.findAllSportEvents());
+            int userBetNumber = consoleReader.readUserBetNumber();
+            if (userBetNumber == 0) return;
+            UserBetService userBetService = new UserBetService();
+            Bet userBet = userBetService.findBetByNumber(userBetNumber);
             BigDecimal wagerAmount;
 
             while (true) {
                 wagerAmount = io.readWagerAmount();
-                BigDecimal currentPlayerBalance = player.getBalance();
-                if (currentPlayerBalance.compareTo(wagerAmount) > -1) {
-                    player.setBalance(currentPlayerBalance.subtract(wagerAmount));
+                BigDecimal playerBalance = player.getBalance();
+                if (playerBalance.compareTo(wagerAmount) > -1) {
+                    player.setBalance(playerBalance.subtract(wagerAmount));
+                    Wager wager = userBetService.createWager(player, wagerAmount, userBet);
+                    wagers.add(wager);
+                    io.printWagerSaved(wager);
                     break;
                 }
                 io.printNotEnoughBalance(player);
             }
-
-
-            Wager wager = new Wager();
-            wager.setPlayer(player);
-            wager.setAmount(wagerAmount);
-            wager.setCurrency(player.getCurrency());
-            wager.setOutcomeOdd(null);
-            wager.setTimestampCreated(LocalDateTime.now());
-            wagers.add(wager);
-            io.printWagerSaved(wager);
         }
     }
 }

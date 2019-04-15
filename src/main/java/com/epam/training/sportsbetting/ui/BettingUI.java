@@ -8,12 +8,12 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
-public class ReaderAndPrinter implements IO {
+public class BettingUI implements IO {
 
     private ConsolePrinter consolePrinter;
     private ConsoleReader consoleReader;
 
-    public ReaderAndPrinter(ConsolePrinter consolePrinter, ConsoleReader consoleReader) {
+    public BettingUI(ConsolePrinter consolePrinter, ConsoleReader consoleReader) {
         this.consolePrinter = consolePrinter;
         this.consoleReader = consoleReader;
     }
@@ -49,14 +49,17 @@ public class ReaderAndPrinter implements IO {
         if (sportEvents == null) {
             return;
         }
+        int betCounter = 1;
         System.out.println("What are you want to bet on? (choose a number or press q for quit)");
 
-        for (int i = 0; i < sportEvents.size(); i++) {
-            int betsListSize = sportEvents.get(i).getBets().size();
+
+        for (SportEvent sportEvent : sportEvents) {
+            int betsListSize = sportEvent.getBets().size();
             for (int j = 0; j < betsListSize; j++) {
-                System.out.print(j + 1 + " " + sportEvents.get(i).getTitle());
-                System.out.print(sportEvents.get(i).getBets().get(j));
+                System.out.print(betCounter + ". " + sportEvent.getTitle());
+                System.out.print(sportEvent.getBets().get(j));
                 System.out.println();
+                betCounter++;
             }
         }
     }

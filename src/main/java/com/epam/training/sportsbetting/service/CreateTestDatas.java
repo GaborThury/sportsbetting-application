@@ -11,6 +11,19 @@ import java.util.List;
 @Getter
 public class CreateTestDatas {
 
+
+    private static CreateTestDatas instance = null;
+    private CreateTestDatas() {
+
+    }
+    public static CreateTestDatas getInstance() {
+        if (instance == null) {
+            instance = new CreateTestDatas();
+        }
+        return instance;
+    }
+
+
     public List<SportEvent> generateSportEvents() {
         List<SportEvent> sportEvents = new ArrayList<>();
 
