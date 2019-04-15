@@ -17,9 +17,19 @@ public class ConsoleReader {
     }
 
     public Currency readPlayerCurrency() {
-        String s = scanner.nextLine();
-        Currency currency = Currency.EUR;
-        return currency;
+
+        while (true) {
+            String s = scanner.nextLine().toUpperCase();
+            switch (s) {
+                case "EUR":
+                    return Currency.EUR;
+                case "USD":
+                    return Currency.USD;
+                case "HUF":
+                    return Currency.HUF;
+            }
+            System.out.println("You entered invalid currency! Please enter HUF, EUR or USD");
+        }
     }
 
     public BigDecimal readWagerAmount() {
