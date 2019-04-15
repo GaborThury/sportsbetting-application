@@ -1,10 +1,9 @@
 package com.epam.training.sportsbetting.ui;
 
-import com.epam.training.sportsbetting.domain.Player;
-import com.epam.training.sportsbetting.domain.SportEvent;
-import com.epam.training.sportsbetting.domain.Wager;
+import com.epam.training.sportsbetting.domain.*;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 
@@ -52,14 +51,17 @@ public class BettingUI implements IO {
         int betCounter = 1;
         System.out.println("What are you want to bet on? (choose a number or press q for quit)");
 
-
         for (SportEvent sportEvent : sportEvents) {
-            int betsListSize = sportEvent.getBets().size();
-            for (int j = 0; j < betsListSize; j++) {
-                System.out.print(betCounter + ". " + sportEvent.getTitle());
-                System.out.print(sportEvent.getBets().get(j));
-                System.out.println();
-                betCounter++;
+            int betListSize = sportEvent.getBets().size();
+            for (int i = 0; i < betListSize; i++) {
+                for (Outcome outcome : sportEvent.getBets().get(i).getOutcomes()) {
+                    System.out.print(betCounter + ". " + sportEvent.getTitle());
+                    System.out.print(" (start: " + sportEvent.getStartDate() + ")");
+                    System.out.print(" Bet: " + sportEvent.getBets().get(i).getDescription());
+                    System.out.print(" Outcome: " + outcome.getDescription());
+                    System.out.println(" Actual odd: " + outcome.getOutcomeOdd().getValue());
+                    betCounter++;
+                }
             }
         }
     }

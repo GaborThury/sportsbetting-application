@@ -35,7 +35,7 @@ public class BettingService implements SportBettingService {
     }
 
     @Override
-    public List<Wager> findallWagers() {
+    public List<Wager> findAllWagers() {
         return null;
     }
 

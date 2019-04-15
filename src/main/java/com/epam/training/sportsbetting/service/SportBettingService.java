@@ -11,6 +11,6 @@ public interface SportBettingService {
     Player findPlayer();
     List<SportEvent> findAllSportEvents();
     void saveWager(Wager wager);
-    List<Wager> findallWagers();
+    List<Wager> findAllWagers();
     void calculateResults();
 }

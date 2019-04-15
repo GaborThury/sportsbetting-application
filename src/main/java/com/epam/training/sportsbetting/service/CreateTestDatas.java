@@ -11,11 +11,12 @@ import java.util.List;
 @Getter
 public class CreateTestDatas {
 
-
     private static CreateTestDatas instance = null;
+    List<SportEvent> sportEvents;
     private CreateTestDatas() {
-
+        generateSportEvents();
     }
+
     public static CreateTestDatas getInstance() {
         if (instance == null) {
             instance = new CreateTestDatas();
@@ -39,49 +40,62 @@ public class CreateTestDatas {
 
     private List<Bet> generateBets() {
         List<Bet> bets = new ArrayList<>();
+        List<String> values = new ArrayList<>();
 
         Bet bet = new Bet();
         bet.setDescription("player Oliver Giroud score");
-        bet.setOutcomes(generateOutcomeList("1"));
+        values.add("0");
+        values.add("1");
+        values.add("2");
+        values.add("3");
+        values.add("3+");
+        bet.setOutcomes(generateOutcomeList(values));
+        values.clear();
         bet.setType(BetType.PLAYERS_SCORE);
         bets.add(bet);
         bet = null;
 
         bet = new Bet();
         bet.setDescription("number of scored goals");
-        bet.setOutcomes(generateOutcomeList("3"));
+        values.add("0");
+        values.add("1-2");
+        values.add("3-4");
+        values.add("4+");
+        bet.setOutcomes(generateOutcomeList(values));
+        values.clear();
         bet.setType(BetType.GOALS);
         bets.add(bet);
         bet = null;
 
         bet = new Bet();
         bet.setDescription("winner");
-        bet.setOutcomes(generateOutcomeList("Arsenal"));
-        bet.setType(BetType.WINNER);
-        bets.add(bet);
-        bet = null;
-
-        bet = new Bet();
-        bet.setDescription("winner");
-        bet.setOutcomes(generateOutcomeList("Chelsea"));
+        values.add("Arsenal");
+        values.add("Chelsea");
+        bet.setOutcomes(generateOutcomeList(values));
+        values.clear();
         bet.setType(BetType.WINNER);
         bets.add(bet);
 
         return bets;
     }
 
-    private List<Outcome> generateOutcomeList(String value) {
+    private List<Outcome> generateOutcomeList(List<String> values) {
         List<Outcome> outcomes = new ArrayList<>();
-        Outcome outcome = new Outcome();
-        outcome.setDescription(value);
-        outcome.setOutcomeOdd(generateOutcomeOdd());
-        outcomes.add(outcome);
+
+        values.forEach(value -> {
+            Outcome outcome = new Outcome();
+            outcome.setDescription(value);
+            outcome.setOutcomeOdd(generateOutcomeOdd());
+            outcomes.add(outcome);
+        });
+
         return outcomes;
     }
 
     private OutcomeOdd generateOutcomeOdd() {
         OutcomeOdd outcomeOdd = new OutcomeOdd();
-        outcomeOdd.setValue(BigDecimal.valueOf(2));
+        int random = (int) (Math.random() * 10) + 1;
+        outcomeOdd.setValue(new BigDecimal(random));
         outcomeOdd.setValidFrom(LocalDateTime.of(2020, 1, 1, 10, 0 ,0));
         outcomeOdd.setValidUntil(outcomeOdd.getValidFrom().plusHours(2));
         return outcomeOdd;
