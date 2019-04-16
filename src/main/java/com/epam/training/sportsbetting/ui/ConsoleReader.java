@@ -8,15 +8,15 @@ import java.util.Scanner;
 public class ConsoleReader {
     private Scanner scanner = new Scanner(System.in);
 
-    public String readPlayerName() {
+    String readPlayerName() {
         return scanner.nextLine();
     }
 
-    public BigDecimal readPlayerBalance() {
+    BigDecimal readPlayerBalance() {
         return new BigDecimal(scanner.nextLine());
     }
 
-    public Currency readPlayerCurrency() {
+    Currency readPlayerCurrency() {
 
         while (true) {
             String s = scanner.nextLine().toUpperCase();
@@ -32,9 +32,12 @@ public class ConsoleReader {
         }
     }
 
-    public BigDecimal readWagerAmount() {
+    BigDecimal readWagerAmount() {
+        System.out.println("What amount do you wish to bet on it?");
         return scanner.nextBigDecimal();
     }
+
+
 
     public int readUserBetNumber() {
         String input = scanner.nextLine();
