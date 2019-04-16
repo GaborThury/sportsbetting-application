@@ -58,7 +58,7 @@ public class App {
 
             userChosenBetNumber = consoleReader.readUserBetNumber();
             if (userChosenBetNumber == 0) return;
-            userOutcomeOdd = userBetService.findOutcomeOddByNumber(userChosenBetNumber);
+            userOutcomeOdd = userBetService.findOutcomeOddByNumber(userChosenBetNumber, sportBettingService.findAllSportEvents());
 
             while (true) {
                 wagerAmount = io.readWagerAmount();

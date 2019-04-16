@@ -105,6 +105,5 @@ public class BettingUI implements IO {
         }
         System.out.println(sb.toString());
         System.out.println("Your new balance is: " + player.getBalance());
-        // Wager 'player Oliver Giroud score=1' of Arsenal vs Chelsea [odd: 2, amount: 100], win: true
     }
 }

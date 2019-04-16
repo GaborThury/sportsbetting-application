@@ -10,9 +10,7 @@ import java.util.Random;
 
 public class UserBetService {
 
-    public OutcomeOdd findOutcomeOddByNumber(int userBet) {
-        BettingService bettingService = new BettingService();
-        List<SportEvent> sportEvents = bettingService.findAllSportEvents();
+    public OutcomeOdd findOutcomeOddByNumber(int userBet, List<SportEvent> sportEvents) {
         int betCounter = 1;
 
         for (SportEvent sportEvent : sportEvents) {
@@ -39,15 +37,6 @@ public class UserBetService {
         wager.setTimestampCreated(LocalDateTime.now());
         return wager;
     }
-
-
-/*    public void markWonWagers(List<Wager> userWagers, Player player, Result result) {
-        for (Wager userWager : userWagers) {
-            if (result.getWinnerOutcomes().contains()) {
-                userWager.setWin(true);
-            }
-        }
-    }*/
 
     public Result generateResult(List<SportEvent> sportEvents) {
         Result result = new Result();
