@@ -4,10 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
 public class Outcome {
+    private Bet bet;
     private String description;
-    private OutcomeOdd outcomeOdd;
+    private List<OutcomeOdd> outcomeOdds;
 }

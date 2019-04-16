@@ -8,8 +8,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 public class Bet {
+    private SportEvent sportEvent;
     private String description;
     private BetType type;
     private List<Outcome> outcomes;

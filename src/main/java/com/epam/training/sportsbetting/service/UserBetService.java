@@ -18,10 +18,12 @@ public class UserBetService {
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
                 for (Outcome outcome : bet.getOutcomes()) {
-                    if (userBet == betCounter) {
-                        return outcome.getOutcomeOdd();
+                    for (OutcomeOdd outcomeOdd : outcome.getOutcomeOdds()) {
+                        if (userBet == betCounter) {
+                            return outcomeOdd;
+                        }
+                        betCounter++;
                     }
-                    betCounter++;
                 }
             }
         }
@@ -38,38 +40,26 @@ public class UserBetService {
         return wager;
     }
 
-    public void generateRandomWagerResults(List<Wager> userWagers, Player player) {
-        for (Wager userWager : userWagers) {
-            if (Math.random() > 0.2) {
-                userWager.setWin(true);
-                player.setBalance(player.getBalance()
-                        .add(userWager.getAmount().multiply(userWager.getOutcomeOdd().getValue())));
-            } else {
-                userWager.setWin(false);
-            }
-        }
-    }
 
-    public void markWonWagers(List<Wager> userWagers, Player player, Result result) {
+/*    public void markWonWagers(List<Wager> userWagers, Player player, Result result) {
         for (Wager userWager : userWagers) {
             if (result.getWinnerOutcomes().contains()) {
                 userWager.setWin(true);
             }
         }
-    }
+    }*/
 
     public Result generateResult(List<SportEvent> sportEvents) {
         Result result = new Result();
-        List<Outcome> finalList = new ArrayList<>();
+        List<Outcome> outcomes = new ArrayList<>();
 
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
                 int randomInt = getRandomNumberInRange(0, bet.getOutcomes().size() - 1);
-                finalList.add(bet.getOutcomes().get(randomInt));
+                outcomes.add(bet.getOutcomes().get(randomInt));
             }
         }
-
-        result.setWinnerOutcomes(finalList);
+        result.setWinnerOutcomes(outcomes);
         return result;
     }
 
@@ -79,5 +69,21 @@ public class UserBetService {
         }
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
+    }
+
+    public void setWinnerWagersTrue(Result result, List<Wager> userWagers, Player player) {
+        List<Outcome> winnerOutcomes = result.getWinnerOutcomes();
+
+        for (Outcome winnerOutcome : winnerOutcomes) {
+            for (Wager userWager : userWagers) {
+                userWager.getOutcomeOdd().getOutcome().getBet().getSportEvent().setResult(result);
+                if (winnerOutcome.getBet().getDescription().equals(userWager.getOutcomeOdd().getOutcome().getBet().getDescription())
+                    && winnerOutcome.getDescription().equals(userWager.getOutcomeOdd().getOutcome().getDescription())) {
+                    userWager.setWin(true);
+                    player.setBalance(player.getBalance()
+                            .add(userWager.getAmount().multiply(userWager.getOutcomeOdd().getValue())));
+                }
+            }
+        }
     }
 }

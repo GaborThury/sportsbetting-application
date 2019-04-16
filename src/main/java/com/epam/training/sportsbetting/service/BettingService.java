@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BettingService implements SportBettingService {
 
-    private List<SportEvent> testDatas;
+    private List<SportEvent> testDatas = null;
 
     @Override
     public void savePlayer(Player player) {
@@ -23,7 +23,8 @@ public class BettingService implements SportBettingService {
     @Override
     public List<SportEvent> findAllSportEvents() {
         if (testDatas == null) {
-            testDatas = CreateTestDatas.getInstance().generateSportEvents();
+            CreateTestDatas createTestDatas = new CreateTestDatas();
+            testDatas = createTestDatas.getSportEvents();
         }
         return testDatas;
     }
