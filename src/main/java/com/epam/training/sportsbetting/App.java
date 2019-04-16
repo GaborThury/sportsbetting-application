@@ -44,11 +44,11 @@ public class App {
        player = io.readPlayerData();
     }
 
-    public void play(){
+    public void play() {
         io.printWelcomeMessage(player);
         ConsoleReader consoleReader = new ConsoleReader();
-        int userChosenBetNumber;
-        OutcomeOdd userOutcomeOdd;
+        int numberOfUserChosenOutcomeOdd;
+        OutcomeOdd userChosenOutcomeOdd;
         BigDecimal wagerAmount;
         BigDecimal playerBalance;
 
@@ -56,16 +56,18 @@ public class App {
             io.printBalance(player);
             io.printOutcomeOdds(sportBettingService.findAllSportEvents());
 
-            userChosenBetNumber = consoleReader.readUserBetNumber();
-            if (userChosenBetNumber == 0) return;
-            userOutcomeOdd = userBetService.findOutcomeOddByNumber(userChosenBetNumber, sportBettingService.findAllSportEvents());
+            numberOfUserChosenOutcomeOdd = consoleReader.readUserBetNumber();
+            if (numberOfUserChosenOutcomeOdd == 0) return;
+            userChosenOutcomeOdd = userBetService.findOutcomeOddByNumber(
+                    numberOfUserChosenOutcomeOdd,
+                    sportBettingService.findAllSportEvents());
 
             while (true) {
                 wagerAmount = io.readWagerAmount();
                 playerBalance = player.getBalance();
                 if (playerBalance.compareTo(wagerAmount) > -1) {
                     player.setBalance(playerBalance.subtract(wagerAmount));
-                    Wager wager = userBetService.createWager(player, wagerAmount, userOutcomeOdd);
+                    Wager wager = userBetService.createWager(player, wagerAmount, userChosenOutcomeOdd);
                     userWagers.add(wager);
                     io.printWagerSaved(wager);
                     break;
@@ -78,10 +80,10 @@ public class App {
     private void calculateResults() {
         Result result = userBetService.generateResult(sportBettingService.findAllSportEvents());
 
-        result.getWinnerOutcomes().forEach(outcome -> {
+        /*result.getWinnerOutcomes().forEach(outcome -> {
             System.out.print(outcome.getBet().getDescription() + ": ");
             System.out.println(outcome.getDescription());
-        });
+        });*/
 
         sportBettingService.findAllSportEvents().get(0).setResult(result);
         userBetService.setWinnerWagersTrue(result, userWagers, player);

@@ -40,15 +40,15 @@ public class UserBetService {
 
     public Result generateResult(List<SportEvent> sportEvents) {
         Result result = new Result();
-        List<Outcome> outcomes = new ArrayList<>();
+        List<Outcome> winnerOutcomes = new ArrayList<>();
 
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
                 int randomInt = getRandomNumberInRange(0, bet.getOutcomes().size() - 1);
-                outcomes.add(bet.getOutcomes().get(randomInt));
+                winnerOutcomes.add(bet.getOutcomes().get(randomInt));
             }
         }
-        result.setWinnerOutcomes(outcomes);
+        result.setWinnerOutcomes(winnerOutcomes);
         return result;
     }
 
