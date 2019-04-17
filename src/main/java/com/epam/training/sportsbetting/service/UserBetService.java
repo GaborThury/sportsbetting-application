@@ -67,7 +67,7 @@ public class UserBetService {
             for (Wager userWager : userWagers) {
                 userWager.getOutcomeOdd().getOutcome().getBet().getSportEvent().setResult(result);
                 if (winnerOutcome.getBet().getDescription().equals(userWager.getOutcomeOdd().getOutcome().getBet().getDescription())
-                    && winnerOutcome.getDescription().equals(userWager.getOutcomeOdd().getOutcome().getDescription())) {
+                        && winnerOutcome.getDescription().equals(userWager.getOutcomeOdd().getOutcome().getDescription())) {
                     userWager.setWin(true);
                     player.setBalance(player.getBalance()
                             .add(userWager.getAmount().multiply(userWager.getOutcomeOdd().getValue())));

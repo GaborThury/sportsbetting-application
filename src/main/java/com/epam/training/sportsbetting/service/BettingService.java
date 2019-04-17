@@ -23,8 +23,8 @@ public class BettingService implements SportBettingService {
     @Override
     public List<SportEvent> findAllSportEvents() {
         if (testDatas == null) {
-            CreateTestDatas createTestDatas = new CreateTestDatas();
-            testDatas = createTestDatas.getSportEvents();
+            TestDataCreator testDataCreator = new TestDataCreator();
+            testDatas = testDataCreator.getSportEvents();
         }
         return testDatas;
     }

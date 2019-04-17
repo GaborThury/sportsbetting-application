@@ -50,9 +50,7 @@ public class ConsolePrinter {
     }
 
     void printWagerSaved(Wager wager) {
-        // System.out.println("Wager " + wager.toString() + "saved!");
-        printWager(wager);
-        System.out.println("] saved!");
+        System.out.println(basicWagerInfoToString(wager) + " saved!");
     }
 
     void printNotEnoughBalance(BigDecimal balance) {
@@ -61,28 +59,18 @@ public class ConsolePrinter {
 
     void printResults(Player player, List<Wager> wagers) {
         StringBuilder sb = new StringBuilder();
-
         sb.append("Results: \n");
-        for (Wager wager : wagers) {
-            sb.append("Wager '");
-            sb.append(wager.getOutcomeOdd().getOutcome().getBet().getDescription());
-            sb.append("=");
-            sb.append(wager.getOutcomeOdd().getOutcome().getDescription());
-            sb.append("' of ");
-            sb.append(wager.getOutcomeOdd().getOutcome().getBet().getSportEvent().getTitle());
-            sb.append(" [odd: " );
-            sb.append(wager.getOutcomeOdd().getValue());
-            sb.append(", amount: ");
-            sb.append(wager.getAmount());
-            sb.append("], win: ");
-            sb.append(wager.isWin());
-            sb.append("\n");
-        }
+        wagers.forEach(wager -> {
+                    sb.append(basicWagerInfoToString(wager));
+                    sb.append(", win: ");
+                    sb.append(wager.isWin());
+                    sb.append("\n");
+                });
         System.out.println(sb.toString());
         System.out.println("Your new balance is: " + player.getBalance());
     }
 
-    private void printWager(Wager wager) {
+    private String basicWagerInfoToString(Wager wager) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Wager '");
@@ -95,8 +83,9 @@ public class ConsolePrinter {
         sb.append(wager.getOutcomeOdd().getValue());
         sb.append(", amount: ");
         sb.append(wager.getAmount());
+        sb.append("]");
 
-        System.out.print(sb.toString());
+        return sb.toString();
     }
 
 }
