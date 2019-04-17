@@ -47,25 +47,21 @@ public class App {
     public void play() {
         io.printWelcomeMessage(player);
         ConsoleReader consoleReader = new ConsoleReader();
-        OutcomeOdd userChosenOutcomeOdd;
-        BigDecimal wagerAmount;
-        BigDecimal playerBalance;
-        int numberOfTheUserChosenOutcome;
 
         while (playerHasMoney()) {
             io.printBalance(player);
             io.printOutcomeOdds(sportBettingService.findAllSportEvents());
 
-            numberOfTheUserChosenOutcome = consoleReader.readUserBetNumber();
+            int numberOfTheUserChosenOutcome = consoleReader.readUserBetNumber();
             if (numberOfTheUserChosenOutcome == 0) return;
-            userChosenOutcomeOdd = userBetService.findOutcomeOddByNumber(
+            OutcomeOdd userChosenOutcomeOdd = userBetService.findOutcomeOddByNumber(
                     numberOfTheUserChosenOutcome,
                     sportBettingService.findAllSportEvents());
 
             while (true) {
-                wagerAmount = io.readWagerAmount();
-                playerBalance = player.getBalance();
-                if (playerBalance.compareTo(wagerAmount) > -1) {
+                BigDecimal wagerAmount = io.readWagerAmount();
+                BigDecimal playerBalance = player.getBalance();
+                if (playerHasEnoughMoneyForThisWager(wagerAmount)) {
                     player.setBalance(playerBalance.subtract(wagerAmount));
                     Wager wager = userBetService.createWager(player, wagerAmount, userChosenOutcomeOdd);
                     userWagers.add(wager);
@@ -80,7 +76,7 @@ public class App {
     private void calculateResults() {
         Result result = userBetService.generateResult(sportBettingService.findAllSportEvents());
 
-        userBetService.setWinnerWagersTrue(result, userWagers, player);
+        userBetService.summarizeResults(result, userWagers, player);
     }
 
     private void printResults() {
@@ -88,7 +84,10 @@ public class App {
     }
 
     private boolean playerHasMoney() {
-        return player.getBalance().compareTo(BigDecimal.ZERO) != 0;
+        return player.getBalance().compareTo(BigDecimal.ZERO) > 0;
     }
 
+    private boolean playerHasEnoughMoneyForThisWager(BigDecimal wagerAmount) {
+        return player.getBalance().compareTo(wagerAmount) > -1;
+    }
 }

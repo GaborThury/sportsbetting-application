@@ -18,4 +18,12 @@ public class Wager {
     private LocalDateTime timestampCreated;
     private boolean processed;
     private boolean win;
+
+    public Outcome getOutcome() {
+        return this.getOutcomeOdd().getOutcome();
+    }
+    // userWager.getOutcomeOdd().getOutcome().getBet().getSportEvent()
+    public SportEvent getSportEvent() {
+        return this.getOutcomeOdd().getOutcome().getBet().getSportEvent();
+    }
 }

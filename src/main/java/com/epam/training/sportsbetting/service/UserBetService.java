@@ -60,19 +60,23 @@ public class UserBetService {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    public void setWinnerWagersTrue(Result result, List<Wager> userWagers, Player player) {
+    public void summarizeResults(Result result, List<Wager> userWagers, Player player) {
         List<Outcome> winnerOutcomes = result.getWinnerOutcomes();
 
-        for (Outcome winnerOutcome : winnerOutcomes) {
-            for (Wager userWager : userWagers) {
-                userWager.getOutcomeOdd().getOutcome().getBet().getSportEvent().setResult(result);
-                if (winnerOutcome.getBet().getDescription().equals(userWager.getOutcomeOdd().getOutcome().getBet().getDescription())
-                        && winnerOutcome.getDescription().equals(userWager.getOutcomeOdd().getOutcome().getDescription())) {
-                    userWager.setWin(true);
-                    player.setBalance(player.getBalance()
-                            .add(userWager.getAmount().multiply(userWager.getOutcomeOdd().getValue())));
-                }
+        userWagers.forEach(userWager -> {
+            if (userWager.getSportEvent().getResult() == null) {
+                userWager.getSportEvent().setResult(result);
             }
-        }
+            if (winnerOutcomes.contains(userWager.getOutcome())) {
+                userWager.setWin(true);
+                updatePlayerBalance(player, userWager);
+            }
+        });
     }
+
+    private void updatePlayerBalance(Player player, Wager wager) {
+        player.setBalance(player.getBalance()
+                .add(wager.getAmount().multiply(wager.getOutcomeOdd().getValue())));
+    }
+
 }
