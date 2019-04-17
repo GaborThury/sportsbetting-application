@@ -11,8 +11,7 @@ import java.util.List;
 @Getter
 public class TestDataCreator {
 
-    private static TestDataCreator instance = null;
-    List<SportEvent> sportEvents;
+    private List<SportEvent> sportEvents;
 
     public TestDataCreator() {
         sportEvents = generateSportEvents();
@@ -136,5 +135,4 @@ public class TestDataCreator {
         outcomeOddsList.add(outcomeOdd);
         return outcomeOddsList;
     }
-
 }

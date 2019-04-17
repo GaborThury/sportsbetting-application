@@ -34,7 +34,6 @@ public class App {
 
         App app = new App(bettingService, bettingUI);
 
-
         app.createPlayer();
         app.play();
         app.calculateResults();
@@ -48,10 +47,10 @@ public class App {
     public void play() {
         io.printWelcomeMessage(player);
         ConsoleReader consoleReader = new ConsoleReader();
-        int numberOfTheUserChosenOutcome;
         OutcomeOdd userChosenOutcomeOdd;
         BigDecimal wagerAmount;
         BigDecimal playerBalance;
+        int numberOfTheUserChosenOutcome;
 
         while (playerHasMoney()) {
             io.printBalance(player);
@@ -81,7 +80,6 @@ public class App {
     private void calculateResults() {
         Result result = userBetService.generateResult(sportBettingService.findAllSportEvents());
 
-        //sportBettingService.findAllSportEvents().get(0).setResult(result);
         userBetService.setWinnerWagersTrue(result, userWagers, player);
     }
 

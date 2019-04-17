@@ -37,8 +37,6 @@ public class ConsoleReader {
         return scanner.nextBigDecimal();
     }
 
-
-
     public int readUserBetNumber() {
         String input = scanner.nextLine();
         return "q".equals(input) ? 0 : Integer.parseInt(input);
