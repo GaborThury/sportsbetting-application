@@ -11,16 +11,14 @@ import java.util.Random;
 public class UserBetService {
 
     public OutcomeOdd findOutcomeOddByNumber(int userBet, List<SportEvent> sportEvents) {
-        int betCounter = 1;
 
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
                 for (Outcome outcome : bet.getOutcomes()) {
                     for (OutcomeOdd outcomeOdd : outcome.getOutcomeOdds()) {
-                        if (userBet == betCounter) {
+                        if (userBet == outcomeOdd.getId()) {
                             return outcomeOdd;
                         }
-                        betCounter++;
                     }
                 }
             }
@@ -64,10 +62,8 @@ public class UserBetService {
         List<Outcome> winnerOutcomes = result.getWinnerOutcomes();
 
         userWagers.forEach(userWager -> {
-            if (userWager.getSportEvent().getResult() == null) {
-                userWager.getSportEvent().setResult(result);
-            }
-            if (winnerOutcomes.contains(userWager.getOutcome())) {
+            setResultForSportEventOfWager(userWager, result);
+            if (userWagerwon(winnerOutcomes, userWager)) {
                 userWager.setWin(true);
                 updatePlayerBalance(player, userWager);
             }
@@ -77,6 +73,16 @@ public class UserBetService {
     private void updatePlayerBalance(Player player, Wager wager) {
         player.setBalance(player.getBalance()
                 .add(wager.getAmount().multiply(wager.getOutcomeOdd().getValue())));
+    }
+
+    private void setResultForSportEventOfWager(Wager wager, Result result) {
+        if (wager.getSportEvent().getResult() == null) {
+            wager.getSportEvent().setResult(result);
+        }
+    }
+
+    private boolean userWagerwon(List<Outcome> winnerOutcomes, Wager userWager) {
+        return winnerOutcomes.contains(userWager.getOutcome());
     }
 
 }

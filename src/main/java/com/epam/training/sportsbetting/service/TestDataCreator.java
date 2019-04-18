@@ -11,12 +11,28 @@ import java.util.List;
 @Getter
 public class TestDataCreator {
 
-    private List<SportEvent> sportEvents;
+    private static TestDataCreator instance;
+    private static List<SportEvent> sportEvents;
+    private int outcomeOddId;
 
-    public TestDataCreator() {
+    private TestDataCreator() {
         sportEvents = generateSportEvents();
     }
 
+    public static TestDataCreator getInstance() {
+        if (instance == null) {
+            synchronized (TestDataCreator.class) {
+                if (instance == null) {
+                    instance = new TestDataCreator();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public List<SportEvent> getSportEvents() {
+        return sportEvents;
+    }
 
     private List<SportEvent> generateSportEvents() {
         List<SportEvent> sportEvents = new ArrayList<>();
@@ -128,11 +144,14 @@ public class TestDataCreator {
         List<OutcomeOdd> outcomeOddsList = new ArrayList<>();
         OutcomeOdd outcomeOdd = new OutcomeOdd();
         int random = (int) (Math.random() * 10) + 1;
+        outcomeOdd.setId(outcomeOddId);
         outcomeOdd.setOutcome(outcome);
         outcomeOdd.setValue(new BigDecimal(random));
         outcomeOdd.setValidFrom(LocalDateTime.of(2020, 1, 1, 10, 0 ,0));
         outcomeOdd.setValidUntil(outcomeOdd.getValidFrom().plusHours(2));
+
         outcomeOddsList.add(outcomeOdd);
+        outcomeOddId++;
         return outcomeOddsList;
     }
 }

@@ -30,19 +30,18 @@ public class ConsolePrinter {
         if (sportEvents == null) {
             return;
         }
-        int betCounter = 1;
         System.out.println("What are you want to bet on? (choose a number or press q for quit)");
+
 
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
                 for (Outcome outcome : bet.getOutcomes()) {
                     for (OutcomeOdd outcomeOdd : outcome.getOutcomeOdds()) {
-                        System.out.print(betCounter + ". " + sportEvent.getTitle());
+                        System.out.print(outcomeOdd.getId() + ". " + sportEvent.getTitle());
                         System.out.print(" (start: " + sportEvent.getStartDate() + ")");
                         System.out.print(" Bet: " + bet.getDescription());
                         System.out.print(" Outcome: " + outcome.getDescription());
                         System.out.println(" Actual odd: " + outcomeOdd.getValue());
-                        betCounter++;
                     }
                 }
             }
