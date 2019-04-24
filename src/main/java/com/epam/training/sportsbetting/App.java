@@ -46,17 +46,14 @@ public class App {
 
     public void play() {
         io.printWelcomeMessage(player);
-        ConsoleReader consoleReader = new ConsoleReader();
 
         while (playerHasMoney()) {
             io.printBalance(player);
             io.printOutcomeOdds(sportBettingService.findAllSportEvents());
 
-            int numberOfTheUserChosenOutcome = consoleReader.readUserBetNumber();
-            if (numberOfTheUserChosenOutcome == 0) return;
-            OutcomeOdd userChosenOutcomeOdd = userBetService.findOutcomeOddByNumber(
-                    numberOfTheUserChosenOutcome,
-                    sportBettingService.findAllSportEvents());
+            int userChosenOutcomeId = readUserChosenOutcome();
+            if (userChosenOutcomeId == 0) return;
+            OutcomeOdd userChosenOutcomeOdd = findOutcomeOddById(userChosenOutcomeId);
 
             while (true) {
                 BigDecimal wagerAmount = io.readWagerAmount();
@@ -72,6 +69,18 @@ public class App {
             }
         }
     }
+
+    private int readUserChosenOutcome() {
+        ConsoleReader consoleReader = new ConsoleReader();
+        return consoleReader.readUserBetNumber();
+    }
+
+    private OutcomeOdd findOutcomeOddById(int numberOfTheUserChosenOutcome) {
+        return userBetService.findOutcomeOddById(
+                numberOfTheUserChosenOutcome,
+                sportBettingService.findAllSportEvents());
+    }
+
 
     private void calculateResults() {
         Result result = userBetService.generateResult(sportBettingService.findAllSportEvents());

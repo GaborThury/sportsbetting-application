@@ -13,7 +13,7 @@ public class TestDataCreator {
 
     private static TestDataCreator instance;
     private static List<SportEvent> sportEvents;
-    private int outcomeOddId;
+    private int outcomeOddId = 1;
 
     private TestDataCreator() {
         sportEvents = generateSportEvents();

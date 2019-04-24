@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class UserBetService {
 
-    public OutcomeOdd findOutcomeOddByNumber(int userBet, List<SportEvent> sportEvents) {
+    public OutcomeOdd findOutcomeOddById(int userBet, List<SportEvent> sportEvents) {
 
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
