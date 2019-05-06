@@ -1,6 +1,7 @@
 package com.epam.training.sportsbetting.service;
 
 import com.epam.training.sportsbetting.domain.*;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@Service
 public class UserBetService {
 
     public OutcomeOdd findOutcomeOddById(int userBet, List<SportEvent> sportEvents) {
-
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
                 for (Outcome outcome : bet.getOutcomes()) {

@@ -1,10 +1,12 @@
 package com.epam.training.sportsbetting.ui;
 
 import com.epam.training.sportsbetting.domain.*;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Component
 public class ConsolePrinter {
     void printAskName() {
         System.out.println("What is your name?");

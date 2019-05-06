@@ -1,13 +1,17 @@
 package com.epam.training.sportsbetting.ui;
 
 import com.epam.training.sportsbetting.domain.Currency;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
+@Component
 public class ConsoleReader {
     private Scanner scanner;
 
+    @Autowired
     public ConsoleReader(Scanner scanner) {
         this.scanner = scanner;
     }

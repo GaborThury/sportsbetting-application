@@ -3,9 +3,11 @@ package com.epam.training.sportsbetting.service;
 import com.epam.training.sportsbetting.domain.Player;
 import com.epam.training.sportsbetting.domain.SportEvent;
 import com.epam.training.sportsbetting.domain.Wager;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BettingService implements SportBettingService {
 
     private List<SportEvent> testDatas = null;

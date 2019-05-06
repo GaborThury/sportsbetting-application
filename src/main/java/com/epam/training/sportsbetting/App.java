@@ -1,36 +1,41 @@
 package com.epam.training.sportsbetting;
 
-import com.epam.training.sportsbetting.Configuration.Configuration;
+import com.epam.training.sportsbetting.Configuration.AppConfiguration;
 import com.epam.training.sportsbetting.domain.*;
 import com.epam.training.sportsbetting.service.UserBetService;
 import com.epam.training.sportsbetting.service.SportBettingService;
 import com.epam.training.sportsbetting.ui.ConsoleReader;
 import com.epam.training.sportsbetting.ui.IO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class App {
 
     private IO io;
-    private SportBettingService sportBettingService;
+    private List<SportEvent> sportEvents;
     private Player player;
     private List<Wager> userWagers = new ArrayList<>();
     private UserBetService userBetService;
     private ConsoleReader consoleReader;
 
+
+    @Autowired
     public App(SportBettingService sportBettingService, IO io, UserBetService userBetService, ConsoleReader consoleReader) {
         this.io = io;
-        this.sportBettingService = sportBettingService;
         this.userBetService = userBetService;
         this.consoleReader = consoleReader;
+        sportEvents = sportBettingService.findAllSportEvents();
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(Configuration.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
         App app = context.getBean(App.class);
 
         app.createPlayer();
@@ -48,7 +53,7 @@ public class App {
 
         while (playerHasMoney()) {
             io.printBalance(player);
-            io.printOutcomeOdds(sportBettingService.findAllSportEvents());
+            io.printOutcomeOdds(sportEvents);
 
             int userChosenOutcomeId = readUserChosenOutcome();
             if (userChosenOutcomeId == 0) return;
@@ -77,12 +82,12 @@ public class App {
     private OutcomeOdd findOutcomeOddById(int numberOfTheUserChosenOutcome) {
         return userBetService.findOutcomeOddById(
                 numberOfTheUserChosenOutcome,
-                sportBettingService.findAllSportEvents());
+                sportEvents);
     }
 
 
     private void calculateResults() {
-        Result result = userBetService.generateResult(sportBettingService.findAllSportEvents());
+        Result result = userBetService.generateResult(sportEvents);
         userBetService.summarizeResults(result, userWagers, player);
     }
 
