@@ -6,7 +6,11 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class ConsoleReader {
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    public ConsoleReader(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     String readPlayerName() {
         return scanner.nextLine();
@@ -17,7 +21,6 @@ public class ConsoleReader {
     }
 
     Currency readPlayerCurrency() {
-
         while (true) {
             String s = scanner.nextLine().toUpperCase();
             switch (s) {

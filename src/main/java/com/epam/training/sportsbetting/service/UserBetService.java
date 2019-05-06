@@ -63,7 +63,7 @@ public class UserBetService {
 
         userWagers.forEach(userWager -> {
             setResultForSportEventOfWager(userWager, result);
-            if (userWagerwon(winnerOutcomes, userWager)) {
+            if (userWagerWon(winnerOutcomes, userWager)) {
                 userWager.setWin(true);
                 updatePlayerBalance(player, userWager);
             }
@@ -81,7 +81,7 @@ public class UserBetService {
         }
     }
 
-    private boolean userWagerwon(List<Outcome> winnerOutcomes, Wager userWager) {
+    private boolean userWagerWon(List<Outcome> winnerOutcomes, Wager userWager) {
         return winnerOutcomes.contains(userWager.getOutcome());
     }
 

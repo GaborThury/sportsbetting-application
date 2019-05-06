@@ -11,16 +11,16 @@ public class BettingUI implements IO {
 
     private ConsolePrinter consolePrinter;
     private ConsoleReader consoleReader;
+    private Player player;
 
-    public BettingUI(ConsolePrinter consolePrinter, ConsoleReader consoleReader) {
+    public BettingUI(ConsolePrinter consolePrinter, ConsoleReader consoleReader, Player player) {
         this.consolePrinter = consolePrinter;
         this.consoleReader = consoleReader;
+        this.player = player;
     }
 
     @Override
     public Player readPlayerData() {
-        Player player = new Player();
-
         consolePrinter.printAskName();
         player.setName(consoleReader.readPlayerName());
 

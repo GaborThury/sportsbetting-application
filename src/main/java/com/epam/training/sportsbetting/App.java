@@ -1,13 +1,13 @@
 package com.epam.training.sportsbetting;
 
+import com.epam.training.sportsbetting.Configuration.Configuration;
 import com.epam.training.sportsbetting.domain.*;
 import com.epam.training.sportsbetting.service.UserBetService;
-import com.epam.training.sportsbetting.service.BettingService;
 import com.epam.training.sportsbetting.service.SportBettingService;
-import com.epam.training.sportsbetting.ui.ConsolePrinter;
 import com.epam.training.sportsbetting.ui.ConsoleReader;
 import com.epam.training.sportsbetting.ui.IO;
-import com.epam.training.sportsbetting.ui.BettingUI;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,20 +19,19 @@ public class App {
     private SportBettingService sportBettingService;
     private Player player;
     private List<Wager> userWagers = new ArrayList<>();
-    private UserBetService userBetService = new UserBetService();
+    private UserBetService userBetService;
+    private ConsoleReader consoleReader;
 
-    public App(SportBettingService sportBettingService, IO io) {
+    public App(SportBettingService sportBettingService, IO io, UserBetService userBetService, ConsoleReader consoleReader) {
         this.io = io;
         this.sportBettingService = sportBettingService;
+        this.userBetService = userBetService;
+        this.consoleReader = consoleReader;
     }
 
     public static void main(String[] args) {
-        ConsolePrinter consolePrinter = new ConsolePrinter();
-        ConsoleReader consoleReader = new ConsoleReader();
-        BettingUI bettingUI = new BettingUI(consolePrinter, consoleReader);
-        BettingService bettingService = new BettingService();
-
-        App app = new App(bettingService, bettingUI);
+        ApplicationContext context = new AnnotationConfigApplicationContext(Configuration.class);
+        App app = context.getBean(App.class);
 
         app.createPlayer();
         app.play();
@@ -61,6 +60,7 @@ public class App {
                 if (playerHasEnoughMoneyForThisWager(wagerAmount)) {
                     player.setBalance(playerBalance.subtract(wagerAmount));
                     Wager wager = userBetService.createWager(player, wagerAmount, userChosenOutcomeOdd);
+
                     userWagers.add(wager);
                     io.printWagerSaved(wager);
                     break;
@@ -71,7 +71,6 @@ public class App {
     }
 
     private int readUserChosenOutcome() {
-        ConsoleReader consoleReader = new ConsoleReader();
         return consoleReader.readUserBetNumber();
     }
 
@@ -84,7 +83,6 @@ public class App {
 
     private void calculateResults() {
         Result result = userBetService.generateResult(sportBettingService.findAllSportEvents());
-
         userBetService.summarizeResults(result, userWagers, player);
     }
 
