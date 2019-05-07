@@ -1,12 +1,9 @@
 package com.epam.training.sportsbetting.ui;
 
 import com.epam.training.sportsbetting.domain.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -16,7 +13,6 @@ public class BettingUI implements IO {
     private ConsoleReader consoleReader;
     private Player player;
 
-    @Autowired
     public BettingUI(ConsolePrinter consolePrinter, ConsoleReader consoleReader, Player player) {
         this.consolePrinter = consolePrinter;
         this.consoleReader = consoleReader;

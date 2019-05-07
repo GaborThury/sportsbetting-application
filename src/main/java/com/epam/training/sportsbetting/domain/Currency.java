@@ -1,6 +1,6 @@
 package com.epam.training.sportsbetting.domain;
 
-public enum  Currency {
+public enum Currency {
     HUF,
     EUR,
     USD

@@ -26,7 +26,6 @@ public class App {
     private ConsoleReader consoleReader;
 
 
-    @Autowired
     public App(SportBettingService sportBettingService, IO io, UserBetService userBetService, ConsoleReader consoleReader) {
         this.io = io;
         this.userBetService = userBetService;
@@ -37,7 +36,6 @@ public class App {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
         App app = context.getBean(App.class);
-
         app.createPlayer();
         app.play();
         app.calculateResults();
