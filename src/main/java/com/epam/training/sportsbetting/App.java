@@ -1,12 +1,11 @@
 package com.epam.training.sportsbetting;
 
-import com.epam.training.sportsbetting.Configuration.AppConfiguration;
+import com.epam.training.sportsbetting.configuration.AppConfiguration;
 import com.epam.training.sportsbetting.domain.*;
 import com.epam.training.sportsbetting.service.UserBetService;
 import com.epam.training.sportsbetting.service.SportBettingService;
 import com.epam.training.sportsbetting.ui.ConsoleReader;
 import com.epam.training.sportsbetting.ui.IO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
