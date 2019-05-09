@@ -12,14 +12,20 @@ import java.util.Arrays;
 @Component
 public class AppAspect {
 
-    @Before("execution(* com.epam.training.sportsbetting.service.UserBetService.*(..))")
+    private long startTime;
+
+    @Before("within(com.epam.training.sportsbetting.service..*)")
     public void before(JoinPoint joinPoint) {
+        startTime = System.currentTimeMillis();
         System.out.print("Calling method: " + joinPoint.getSignature().getName());
         System.out.println(" with parameters: " + Arrays.toString(joinPoint.getArgs()));
     }
-    @AfterReturning(pointcut = "execution(* com.epam.training.sportsbetting.service.UserBetService.*(..))",
+    
+    @AfterReturning(pointcut = "within(com.epam.training.sportsbetting.service..*)",
         returning = "returnValue")
-    public void after(JoinPoint joinPoint, Object returnValue) {
+    public void after(Object returnValue) {
         System.out.println("The return value of the method is: " + returnValue);
+        long executionTime = System.currentTimeMillis() - startTime;
+        System.out.println("Method took " + executionTime + " ms to execute.");
     }
 }
