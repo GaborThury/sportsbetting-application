@@ -39,7 +39,7 @@ public class ConsoleReader {
 
     BigDecimal readWagerAmount() {
         System.out.println("What amount do you wish to bet on it?");
-        return scanner.nextBigDecimal();
+        return new BigDecimal(scanner.nextLine());
     }
 
     public int readUserBetNumber() {
