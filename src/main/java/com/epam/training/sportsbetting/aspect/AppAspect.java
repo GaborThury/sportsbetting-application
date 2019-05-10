@@ -6,7 +6,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -16,9 +15,11 @@ import java.util.Arrays;
 public class AppAspect {
 
     private long startTime;
-
-    @Autowired
     private Logger logger;
+
+    public AppAspect(Logger logger) {
+        this.logger = logger;
+    }
 
     @Before("within(com.epam.training.sportsbetting.service..*)")
     public void before(JoinPoint joinPoint) {
