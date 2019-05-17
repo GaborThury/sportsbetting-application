@@ -2,16 +2,16 @@ package com.epam.training.sportsbetting.configuration;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.Scanner;
 
 
-@org.springframework.context.annotation.Configuration
+@Configuration
+@Import(DbConfiguration.class)
 @EnableAspectJAutoProxy
+@EnableJpaRepositories(basePackages = "com.epam.training.sportsbetting.repository")
 @ComponentScan(basePackages = "com.epam.training.sportsbetting")
 public class AppConfiguration {
 
@@ -21,7 +21,6 @@ public class AppConfiguration {
     }
 
     @Bean
-    @Scope("prototype")
     public Logger logger(InjectionPoint injectionPoint) {
         return Logger.getLogger(injectionPoint.getMember().getDeclaringClass());
     }
