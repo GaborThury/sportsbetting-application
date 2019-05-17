@@ -3,6 +3,7 @@ package com.epam.training.sportsbetting.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+//@ToString
 @Entity
 @Table(name = "SPORTEVENT")
 public abstract class SportEvent {
@@ -29,7 +30,7 @@ public abstract class SportEvent {
     @Column
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "sportEvent")
+    @OneToMany(mappedBy = "sportEvent", fetch = FetchType.EAGER)
     private List<Bet> bets = new ArrayList<>();
 
     @Embedded

@@ -40,7 +40,7 @@ public class DbConfiguration {
         return em;
     }
 
-    @Bean
+/*    @Bean
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
@@ -48,12 +48,22 @@ public class DbConfiguration {
         dataSource.setUsername("sa");
         dataSource.setPassword("sa");
         return dataSource;
+    }*/
+
+    @Bean
+    public DataSource dataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/sportbetting?useSSL=false");
+        dataSource.setUsername( "root" );
+        dataSource.setPassword( "Flow2019*" );
+        return dataSource;
     }
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        //properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
         return properties;
     }

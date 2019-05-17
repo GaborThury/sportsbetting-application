@@ -2,10 +2,12 @@ package com.epam.training.sportsbetting;
 
 import com.epam.training.sportsbetting.configuration.AppConfiguration;
 import com.epam.training.sportsbetting.domain.*;
+import com.epam.training.sportsbetting.repository.SportEventRepository;
 import com.epam.training.sportsbetting.service.UserBetService;
 import com.epam.training.sportsbetting.service.SportBettingService;
 import com.epam.training.sportsbetting.ui.ConsoleReader;
 import com.epam.training.sportsbetting.ui.IO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
@@ -13,9 +15,13 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class App {
+
+    @Autowired
+    SportEventRepository sportEventRepository;
 
     private IO io;
     private List<SportEvent> sportEvents;
@@ -50,7 +56,8 @@ public class App {
 
         while (playerHasMoney()) {
             io.printBalance(player);
-            io.printOutcomeOdds(sportEvents);
+            System.out.println(sportEventRepository.count());
+            io.printOutcomeOdds(new ArrayList<>(sportEventRepository.findAll()));
 
             int userChosenOutcomeId = readUserChosenOutcome();
             if (userChosenOutcomeId == 0) return;
