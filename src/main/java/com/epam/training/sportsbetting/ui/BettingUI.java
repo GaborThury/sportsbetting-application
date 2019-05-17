@@ -25,7 +25,6 @@ public class BettingUI implements IO {
     @Override
     public Player readPlayerData() {
         Player player = new Player();
-        //player.setId(1);
 
         consolePrinter.printAskName();
         player.setName(consoleReader.readPlayerName());

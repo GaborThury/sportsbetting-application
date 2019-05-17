@@ -52,7 +52,6 @@ public class TestDataCreator {
         tennisSportEvent.setBets(generateBetsForDjokovicVsNadal(tennisSportEvent));
 
         sportEvents.add(tennisSportEvent);
-
         return sportEvents;
     }
 
