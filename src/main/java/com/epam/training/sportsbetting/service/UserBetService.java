@@ -1,8 +1,7 @@
 package com.epam.training.sportsbetting.service;
 
 import com.epam.training.sportsbetting.domain.*;
-import com.epam.training.sportsbetting.service.domainService.PlayerService;
-import org.aspectj.lang.annotation.Pointcut;
+import com.epam.training.sportsbetting.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,27 +10,30 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class UserBetService {
 
     @Autowired
-    PlayerService playerService;
+    private OutcomeOddRepository outcomeOddRepository;
 
-    public OutcomeOdd findOutcomeOddById(int userBet, List<SportEvent> sportEvents) {
-        for (SportEvent sportEvent : sportEvents) {
-            for (Bet bet : sportEvent.getBets()) {
-                for (Outcome outcome : bet.getOutcomes()) {
-                    for (OutcomeOdd outcomeOdd : outcome.getOutcomeOdds()) {
-                        if (userBet == outcomeOdd.getId()) {
-                            return outcomeOdd;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
+    @Autowired
+    private OutcomeRepository outcomeRepository;
+
+    @Autowired
+    private BetRepository betRepository;
+
+    @Autowired
+    private WagerRepository wagerRepository;
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    public OutcomeOdd findOutcomeOddById(int id) {
+        return outcomeOddRepository.findById(id).orElse(null);
     }
+
 
     public Wager createWager(Player player, BigDecimal wagerAmount, OutcomeOdd userOutcomeOdd) {
         Wager wager = new Wager();
@@ -40,19 +42,18 @@ public class UserBetService {
         wager.setCurrency(player.getCurrency());
         wager.setOutcomeOdd(userOutcomeOdd);
         wager.setTimestampCreated(LocalDateTime.now());
-        return wager;
+        return wagerRepository.save(wager);
     }
 
-    public Result generateResult(List<SportEvent> sportEvents) {
+    public Result generateResult() {
         Result result = new Result();
         List<Outcome> winnerOutcomes = new ArrayList<>();
 
-        for (SportEvent sportEvent : sportEvents) {
-            for (Bet bet : sportEvent.getBets()) {
-                int randomInt = getRandomNumberInRange(0, bet.getOutcomes().size() - 1);
-                winnerOutcomes.add(bet.getOutcomes().get(randomInt));
-            }
-        }
+        betRepository.findAll().forEach(bet -> {
+            int randomInt = getRandomNumberInRange(0, bet.getOutcomes().size() - 1);
+            winnerOutcomes.add(bet.getOutcomes().get(randomInt));
+        });
+
         result.setWinnerOutcomes(winnerOutcomes);
         return result;
     }
@@ -65,32 +66,30 @@ public class UserBetService {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    public void summarizeResults(Result result, List<Wager> userWagers, Player player) {
-        List<Outcome> winnerOutcomes = result.getWinnerOutcomes();
+    public void summarizeResults(Result result, Player player) {
+        List<Integer> winnerOutcomeIdS = result.getWinnerOutcomes()
+                .stream()
+                .map(Outcome::getId)
+                .collect(Collectors.toList());
 
-        userWagers.forEach(userWager -> {
-            setResultForSportEventOfWager(userWager, result);
-            if (userWagerWon(winnerOutcomes, userWager)) {
-                userWager.setWin(true);
-                updatePlayerBalance(player, userWager);
+        wagerRepository.findAll().forEach(wager -> {
+            if (wagerWon(winnerOutcomeIdS, wager)) {
+                wager.setWin(true);
+                updatePlayerBalance(player, wager);
             }
+            wager.setProcessed(true);
+            wagerRepository.save(wager);
         });
     }
 
     private void updatePlayerBalance(Player player, Wager wager) {
         player.setBalance(player.getBalance()
                 .add(wager.getAmount().multiply(wager.getOutcomeOdd().getValue())));
-        playerService.save(player);
+        playerRepository.save(player);
     }
 
-    private void setResultForSportEventOfWager(Wager wager, Result result) {
-        if (wager.getSportEvent().getResult() == null) {
-            wager.getSportEvent().setResult(result);
-        }
-    }
-
-    private boolean userWagerWon(List<Outcome> winnerOutcomes, Wager userWager) {
-        return winnerOutcomes.contains(userWager.getOutcome());
+    private boolean wagerWon(List<Integer> winnerOutcomeIdS, Wager wager) {
+        return winnerOutcomeIdS.contains(wager.getOutcomeOdd().getId());
     }
 
 }

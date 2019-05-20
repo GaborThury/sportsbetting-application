@@ -2,44 +2,30 @@ package com.epam.training.sportsbetting;
 
 import com.epam.training.sportsbetting.configuration.AppConfiguration;
 import com.epam.training.sportsbetting.domain.*;
-import com.epam.training.sportsbetting.repository.SportEventRepository;
-import com.epam.training.sportsbetting.service.UserBetService;
 import com.epam.training.sportsbetting.service.SportBettingService;
-import com.epam.training.sportsbetting.service.domainService.PlayerService;
+import com.epam.training.sportsbetting.service.UserBetService;
 import com.epam.training.sportsbetting.ui.ConsoleReader;
 import com.epam.training.sportsbetting.ui.IO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class App {
 
-    @Autowired
-    SportEventRepository sportEventRepository;
-
-    @Autowired
-    PlayerService playerService;
-
     private IO io;
-    private List<SportEvent> sportEvents;
     private Player player;
-    private List<Wager> userWagers = new ArrayList<>();
     private UserBetService userBetService;
     private ConsoleReader consoleReader;
+    private SportBettingService sportBettingService;
 
-
-    public App(SportBettingService sportBettingService, IO io, UserBetService userBetService, ConsoleReader consoleReader) {
+    public App(IO io, UserBetService userBetService, ConsoleReader consoleReader, SportBettingService sportBettingService) {
         this.io = io;
         this.userBetService = userBetService;
         this.consoleReader = consoleReader;
-        sportEvents = sportBettingService.findAllSportEvents();
+        this.sportBettingService = sportBettingService;
     }
 
     public static void main(String[] args) {
@@ -52,7 +38,8 @@ public class App {
     }
 
     private void createPlayer() {
-       player = io.readPlayerData();
+        player = (io.readPlayerData());
+        sportBettingService.savePlayer(player);
     }
 
     public void play() {
@@ -60,7 +47,7 @@ public class App {
 
         while (playerHasMoney()) {
             io.printBalance(player);
-            io.printOutcomeOdds(new ArrayList<>(sportEventRepository.findAll()));
+            io.printOutcomeOdds(sportBettingService.findAllSportEvents());
 
             int userChosenOutcomeId = readUserChosenOutcome();
             if (userChosenOutcomeId == 0) return;
@@ -71,11 +58,8 @@ public class App {
                 BigDecimal playerBalance = player.getBalance();
                 if (playerHasEnoughMoneyForThisWager(wagerAmount)) {
                     player.setBalance(playerBalance.subtract(wagerAmount));
+
                     Wager wager = userBetService.createWager(player, wagerAmount, userChosenOutcomeOdd);
-
-                    playerService.save(player);
-
-                    userWagers.add(wager);
                     io.printWagerSaved(wager);
                     break;
                 }
@@ -88,20 +72,18 @@ public class App {
         return consoleReader.readUserBetNumber();
     }
 
-    private OutcomeOdd findOutcomeOddById(int numberOfTheUserChosenOutcome) {
-        return userBetService.findOutcomeOddById(
-                numberOfTheUserChosenOutcome,
-                sportEvents);
+    private OutcomeOdd findOutcomeOddById(int idToGet) {
+        return userBetService.findOutcomeOddById(idToGet);
     }
 
 
     private void calculateResults() {
-        Result result = userBetService.generateResult(sportEvents);
-        userBetService.summarizeResults(result, userWagers, player);
+        Result result = userBetService.generateResult();
+        userBetService.summarizeResults(result, player);
     }
 
     private void printResults() {
-        io.printResults(player, userWagers);
+        io.printResults(player, sportBettingService.findAllWagers());
     }
 
     private boolean playerHasMoney() {

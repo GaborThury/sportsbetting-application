@@ -3,8 +3,9 @@ package com.epam.training.sportsbetting.service;
 import com.epam.training.sportsbetting.domain.Player;
 import com.epam.training.sportsbetting.domain.SportEvent;
 import com.epam.training.sportsbetting.domain.Wager;
+import com.epam.training.sportsbetting.repository.PlayerRepository;
 import com.epam.training.sportsbetting.repository.SportEventRepository;
-import com.epam.training.sportsbetting.service.domainService.SaveTestDataToDB;
+import com.epam.training.sportsbetting.repository.WagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +14,19 @@ import java.util.List;
 @Service
 public class BettingService implements SportBettingService {
 
-    @Autowired
-    SportEventRepository sportEventRepository;
+    private SportEventRepository sportEventRepository;
+    private PlayerRepository playerRepository;
+    private WagerRepository wagerRepository;
 
-    @Autowired
-    SaveTestDataToDB saveTestDataToDB;
-
-    private List<SportEvent> testDatas = null;
+    public BettingService(SportEventRepository sportEventRepository, PlayerRepository playerRepository, WagerRepository wagerRepository) {
+        this.sportEventRepository = sportEventRepository;
+        this.playerRepository = playerRepository;
+        this.wagerRepository = wagerRepository;
+    }
 
     @Override
     public void savePlayer(Player player) {
-
+        playerRepository.save(player);
     }
 
     @Override
@@ -33,23 +36,17 @@ public class BettingService implements SportBettingService {
 
     @Override
     public List<SportEvent> findAllSportEvents() {
-        if (testDatas == null) {
-            testDatas = TestDataCreator.getInstance().getSportEvents();
-            //testDatas.forEach(sportEvent -> sportEventRepository.save(sportEvent));
-            saveTestDataToDB.save(testDatas);
-        }
-        return testDatas;
+        return sportEventRepository.findAll();
     }
-
 
     @Override
     public void saveWager(Wager wager) {
-
+        wagerRepository.save(wager);
     }
 
     @Override
     public List<Wager> findAllWagers() {
-        return null;
+        return wagerRepository.findAll();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.epam.training.sportsbetting.ui;
 
 import com.epam.training.sportsbetting.domain.*;
-import com.epam.training.sportsbetting.repository.SportEventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -10,9 +8,6 @@ import java.util.List;
 
 @Component
 public class ConsolePrinter {
-
-    @Autowired
-    SportEventRepository sportEventRepository;
 
     void printAskName() {
         System.out.println("What is your name?");
@@ -40,9 +35,6 @@ public class ConsolePrinter {
         }
         System.out.println("What are you want to bet on? (choose a number or press q for quit)");
 
-        sportEventRepository.findAll()
-                .forEach(sportEvent -> System.out.println(sportEvent.getBets())) ;
-
         for (SportEvent sportEvent : sportEvents) {
             for (Bet bet : sportEvent.getBets()) {
                 for (Outcome outcome : bet.getOutcomes()) {
@@ -67,6 +59,7 @@ public class ConsolePrinter {
     }
 
     void printResults(Player player, List<Wager> wagers) {
+
         StringBuilder sb = new StringBuilder();
         sb.append("Results: \n");
         wagers.forEach(wager -> {

@@ -1,4 +1,4 @@
-package com.epam.training.sportsbetting.service.domainService;
+package com.epam.training.sportsbetting.service;
 
 import com.epam.training.sportsbetting.domain.SportEvent;
 import com.epam.training.sportsbetting.repository.*;
@@ -9,12 +9,16 @@ import java.util.List;
 
 @Service
 public class SaveTestDataToDB {
+
+    private List<SportEvent> testDatas;
+
     private SportEventRepository sportEventRepository;
     private BetRepository betRepository;
     private OutcomeRepository outcomeRepository;
     private OutcomeOddRepository outcomeOddRepository;
     private PlayerRepository playerRepository;
     private WagerRepository wagerRepository;
+
 
     @Autowired
     public SaveTestDataToDB(BetRepository betRepository, OutcomeOddRepository outcomeOddRepository,
@@ -26,6 +30,9 @@ public class SaveTestDataToDB {
         this.outcomeOddRepository = outcomeOddRepository;
         this.playerRepository = playerRepository;
         this.wagerRepository = wagerRepository;
+
+        testDatas = TestDataCreator.getInstance().getSportEvents();
+        save(testDatas);
     }
 
     public void save(List<SportEvent> sportEvents) {
@@ -40,5 +47,4 @@ public class SaveTestDataToDB {
             });
         });
     }
-
 }
