@@ -1,7 +1,7 @@
 package com.epam.training.sportsbetting.ui;
 
 import com.epam.training.sportsbetting.domain.*;
-import com.epam.training.sportsbetting.repository.PlayerRepository;
+import com.epam.training.sportsbetting.service.domainService.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class BettingUI implements IO {
 
     @Autowired
-    private PlayerRepository playerRepository;
+    private PlayerService playerService;
 
     private ConsolePrinter consolePrinter;
     private ConsoleReader consoleReader;
@@ -35,8 +35,7 @@ public class BettingUI implements IO {
         consolePrinter.printAskCurrency();
         player.setCurrency(consoleReader.readPlayerCurrency());
 
-        playerRepository.save(player);
-        return player;
+        return playerService.save(player);
     }
 
     @Override

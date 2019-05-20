@@ -1,7 +1,9 @@
 package com.epam.training.sportsbetting.service;
 
 import com.epam.training.sportsbetting.domain.*;
+import com.epam.training.sportsbetting.service.domainService.PlayerService;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,6 +14,9 @@ import java.util.Random;
 
 @Service
 public class UserBetService {
+
+    @Autowired
+    PlayerService playerService;
 
     public OutcomeOdd findOutcomeOddById(int userBet, List<SportEvent> sportEvents) {
         for (SportEvent sportEvent : sportEvents) {
@@ -75,6 +80,7 @@ public class UserBetService {
     private void updatePlayerBalance(Player player, Wager wager) {
         player.setBalance(player.getBalance()
                 .add(wager.getAmount().multiply(wager.getOutcomeOdd().getValue())));
+        playerService.save(player);
     }
 
     private void setResultForSportEventOfWager(Wager wager, Result result) {

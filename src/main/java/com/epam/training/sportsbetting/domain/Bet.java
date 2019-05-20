@@ -27,6 +27,6 @@ public class Bet {
     @Embedded
     private BetType type;
 
-    @OneToMany(mappedBy = "bet")
+    @OneToMany(mappedBy = "bet", fetch = FetchType.EAGER)
     private List<Outcome> outcomes = new ArrayList<>();
 }

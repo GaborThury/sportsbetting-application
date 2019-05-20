@@ -5,6 +5,7 @@ import com.epam.training.sportsbetting.domain.*;
 import com.epam.training.sportsbetting.repository.SportEventRepository;
 import com.epam.training.sportsbetting.service.UserBetService;
 import com.epam.training.sportsbetting.service.SportBettingService;
+import com.epam.training.sportsbetting.service.domainService.PlayerService;
 import com.epam.training.sportsbetting.ui.ConsoleReader;
 import com.epam.training.sportsbetting.ui.IO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class App {
 
     @Autowired
     SportEventRepository sportEventRepository;
+
+    @Autowired
+    PlayerService playerService;
 
     private IO io;
     private List<SportEvent> sportEvents;
@@ -56,7 +60,6 @@ public class App {
 
         while (playerHasMoney()) {
             io.printBalance(player);
-            System.out.println(sportEventRepository.count());
             io.printOutcomeOdds(new ArrayList<>(sportEventRepository.findAll()));
 
             int userChosenOutcomeId = readUserChosenOutcome();
@@ -69,6 +72,8 @@ public class App {
                 if (playerHasEnoughMoneyForThisWager(wagerAmount)) {
                     player.setBalance(playerBalance.subtract(wagerAmount));
                     Wager wager = userBetService.createWager(player, wagerAmount, userChosenOutcomeOdd);
+
+                    playerService.save(player);
 
                     userWagers.add(wager);
                     io.printWagerSaved(wager);

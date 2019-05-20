@@ -4,6 +4,7 @@ import com.epam.training.sportsbetting.domain.Player;
 import com.epam.training.sportsbetting.domain.SportEvent;
 import com.epam.training.sportsbetting.domain.Wager;
 import com.epam.training.sportsbetting.repository.SportEventRepository;
+import com.epam.training.sportsbetting.service.domainService.SaveTestDataToDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ public class BettingService implements SportBettingService {
 
     @Autowired
     SportEventRepository sportEventRepository;
+
+    @Autowired
+    SaveTestDataToDB saveTestDataToDB;
 
     private List<SportEvent> testDatas = null;
 
@@ -31,7 +35,8 @@ public class BettingService implements SportBettingService {
     public List<SportEvent> findAllSportEvents() {
         if (testDatas == null) {
             testDatas = TestDataCreator.getInstance().getSportEvents();
-            testDatas.forEach(sportEvent -> sportEventRepository.save(sportEvent));
+            //testDatas.forEach(sportEvent -> sportEventRepository.save(sportEvent));
+            saveTestDataToDB.save(testDatas);
         }
         return testDatas;
     }

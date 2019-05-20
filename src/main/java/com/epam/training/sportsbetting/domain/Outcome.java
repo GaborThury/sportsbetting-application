@@ -26,6 +26,6 @@ public class Outcome {
     @Column
     private String description;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<OutcomeOdd> outcomeOdds = new ArrayList<>();
 }
