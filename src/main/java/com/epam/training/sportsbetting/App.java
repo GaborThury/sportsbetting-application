@@ -38,7 +38,7 @@ public class App {
     }
 
     private void createPlayer() {
-        player = (io.readPlayerData());
+        player = io.readPlayerData();
         sportBettingService.savePlayer(player);
     }
 
@@ -55,10 +55,8 @@ public class App {
 
             while (true) {
                 BigDecimal wagerAmount = io.readWagerAmount();
-                BigDecimal playerBalance = player.getBalance();
                 if (playerHasEnoughMoneyForThisWager(wagerAmount)) {
-                    player.setBalance(playerBalance.subtract(wagerAmount));
-
+                    updatePlayerBalance(wagerAmount);
                     Wager wager = userBetService.createWager(player, wagerAmount, userChosenOutcomeOdd);
                     io.printWagerSaved(wager);
                     break;
@@ -93,4 +91,10 @@ public class App {
     private boolean playerHasEnoughMoneyForThisWager(BigDecimal wagerAmount) {
         return player.getBalance().compareTo(wagerAmount) > -1;
     }
+
+    private void updatePlayerBalance(BigDecimal wagerAmount) {
+        player.setBalance(player.getBalance().subtract(wagerAmount));
+        sportBettingService.savePlayer(player);
+    }
+
 }

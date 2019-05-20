@@ -10,28 +10,20 @@ import java.util.List;
 @Service
 public class SaveTestDataToDB {
 
-    private List<SportEvent> testDatas;
-
     private SportEventRepository sportEventRepository;
     private BetRepository betRepository;
     private OutcomeRepository outcomeRepository;
     private OutcomeOddRepository outcomeOddRepository;
-    private PlayerRepository playerRepository;
-    private WagerRepository wagerRepository;
-
 
     @Autowired
     public SaveTestDataToDB(BetRepository betRepository, OutcomeOddRepository outcomeOddRepository,
-                            OutcomeRepository outcomeRepository, PlayerRepository playerRepository,
-                            SportEventRepository sportEventRepository, WagerRepository wagerRepository) {
+                            OutcomeRepository outcomeRepository,SportEventRepository sportEventRepository) {
         this.sportEventRepository = sportEventRepository;
         this.betRepository = betRepository;
         this.outcomeRepository = outcomeRepository;
         this.outcomeOddRepository = outcomeOddRepository;
-        this.playerRepository = playerRepository;
-        this.wagerRepository = wagerRepository;
 
-        testDatas = TestDataCreator.getInstance().getSportEvents();
+        List<SportEvent> testDatas = TestDataCreator.getInstance().getSportEvents();
         save(testDatas);
     }
 

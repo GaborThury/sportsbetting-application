@@ -2,6 +2,7 @@ package com.epam.training.sportsbetting.service;
 
 import com.epam.training.sportsbetting.domain.*;
 import lombok.Getter;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class TestDataCreator {
+public final class TestDataCreator {
 
     private static TestDataCreator instance;
     private static List<SportEvent> sportEvents;
@@ -146,7 +147,7 @@ public class TestDataCreator {
         outcomeOdd.setId(outcomeOddId);
         outcomeOdd.setOutcome(outcome);
         outcomeOdd.setValue(new BigDecimal(random));
-        outcomeOdd.setValidFrom(LocalDateTime.of(2020, 1, 1, 10, 0 ,0));
+        outcomeOdd.setValidFrom(LocalDateTime.of(2020, 1, 1, 10, 0, 0));
         outcomeOdd.setValidUntil(outcomeOdd.getValidFrom().plusHours(2));
 
         outcomeOddsList.add(outcomeOdd);

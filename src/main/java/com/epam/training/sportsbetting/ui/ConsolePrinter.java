@@ -59,7 +59,6 @@ public class ConsolePrinter {
     }
 
     void printResults(Player player, List<Wager> wagers) {
-
         StringBuilder sb = new StringBuilder();
         sb.append("Results: \n");
         wagers.forEach(wager -> {

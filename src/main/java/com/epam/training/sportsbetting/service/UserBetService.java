@@ -2,7 +2,6 @@ package com.epam.training.sportsbetting.service;
 
 import com.epam.training.sportsbetting.domain.*;
 import com.epam.training.sportsbetting.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,21 +13,21 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserBetService {
-
-    @Autowired
     private OutcomeOddRepository outcomeOddRepository;
-
-    @Autowired
     private OutcomeRepository outcomeRepository;
-
-    @Autowired
     private BetRepository betRepository;
-
-    @Autowired
     private WagerRepository wagerRepository;
-
-    @Autowired
     private PlayerRepository playerRepository;
+
+    public UserBetService(OutcomeOddRepository outcomeOddRepository, OutcomeRepository outcomeRepository,
+                          BetRepository betRepository, WagerRepository wagerRepository,
+                          PlayerRepository playerRepository) {
+        this.outcomeOddRepository = outcomeOddRepository;
+        this.outcomeRepository = outcomeRepository;
+        this.betRepository = betRepository;
+        this.wagerRepository = wagerRepository;
+        this.playerRepository = playerRepository;
+    }
 
     public OutcomeOdd findOutcomeOddById(int id) {
         return outcomeOddRepository.findById(id).orElse(null);
