@@ -71,7 +71,7 @@ public class UserBetService {
                 .map(Outcome::getId)
                 .collect(Collectors.toList());
 
-        wagerRepository.findAll().forEach(wager -> {
+        wagerRepository.findByPlayerId(player.getId()).forEach(wager -> {
             if (wagerWon(winnerOutcomeIdS, wager)) {
                 wager.setWin(true);
                 updatePlayerBalance(player, wager);

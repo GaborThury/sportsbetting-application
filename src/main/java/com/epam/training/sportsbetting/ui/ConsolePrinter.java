@@ -4,6 +4,7 @@ import com.epam.training.sportsbetting.domain.*;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -59,9 +60,18 @@ public class ConsolePrinter {
     }
 
     void printResults(Player player, List<Wager> wagers) {
+
+        List<Wager> currentUserWagers = new ArrayList<>(wagers);
+
+        wagers.forEach(wager -> {
+            if (wagerBelongsToOtherPlayer(wager, player)) {
+                currentUserWagers.remove(wager);
+            }
+        });
+
         StringBuilder sb = new StringBuilder();
         sb.append("Results: \n");
-        wagers.forEach(wager -> {
+        currentUserWagers.forEach(wager -> {
                     sb.append(basicWagerInfoToString(wager));
                     sb.append(", win: ");
                     sb.append(wager.isWin());
@@ -69,6 +79,10 @@ public class ConsolePrinter {
                 });
         System.out.println(sb.toString());
         System.out.println("Your new balance is: " + player.getBalance());
+    }
+
+    private boolean wagerBelongsToOtherPlayer(Wager wager, Player player) {
+         return !(wager.getPlayer().getId().equals(player.getId()));
     }
 
     private String basicWagerInfoToString(Wager wager) {
