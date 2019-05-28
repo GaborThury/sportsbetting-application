@@ -1,4 +1,3 @@
-/*
 package com.epam.training.sportsbetting.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureAuth(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
+        auth.inMemoryAuthentication()
                 .withUser("admin")
                 .password("{noop}pass")
                 .roles("ADMIN")
@@ -37,4 +35,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin().permitAll();
     }
 }
-*/
