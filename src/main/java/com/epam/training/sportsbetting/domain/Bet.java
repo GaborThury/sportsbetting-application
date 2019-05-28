@@ -24,7 +24,8 @@ public class Bet {
     @Column
     private String description;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
+    @Column(length = 127)
     private BetType type;
 
     @OneToMany(mappedBy = "bet", fetch = FetchType.EAGER)

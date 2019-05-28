@@ -14,7 +14,6 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableTransactionManagement
 public class DbConfiguration {
 
     @Bean
@@ -54,7 +53,7 @@ public class DbConfiguration {
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/sportbetting?useSSL=false");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/sportbetting?useSSL=false&allowPublicKeyRetrieval=true");
         dataSource.setUsername( "root" );
         dataSource.setPassword( "Flow2019*" );
         return dataSource;
@@ -62,10 +61,9 @@ public class DbConfiguration {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
         return properties;
     }
-
 }
