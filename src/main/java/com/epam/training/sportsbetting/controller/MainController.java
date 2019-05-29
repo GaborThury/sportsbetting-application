@@ -62,4 +62,14 @@ public class MainController {
         return ResponseEntity.ok(null);
     }
 
+    @GetMapping("/activation/{code}")
+    public ResponseEntity activation(@PathVariable("code") String code) {
+        try {
+            userService.activateUser(code);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
 }

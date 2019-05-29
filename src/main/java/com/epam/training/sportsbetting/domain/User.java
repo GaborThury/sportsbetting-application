@@ -23,6 +23,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private String activationCode;
+
+    @Column
+    private Boolean enabled;
+
     @ManyToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
