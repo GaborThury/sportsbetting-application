@@ -1,7 +1,9 @@
 package com.epam.training.sportsbetting.controller;
 
+import com.epam.training.sportsbetting.domain.User;
 import com.epam.training.sportsbetting.service.domainService.BetService;
 import com.epam.training.sportsbetting.service.domainService.SportEventService;
+import com.epam.training.sportsbetting.service.domainService.UserService;
 import com.epam.training.sportsbetting.service.dto.SportEventDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class MainController {
 
     @Autowired
     private BetService betService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public String index() {
@@ -50,4 +55,11 @@ public class MainController {
     public ResponseEntity<List> bets() {
         return ResponseEntity.ok(betService.findAll());
     }
+
+    @PostMapping("/registration")
+    public ResponseEntity registration(@ModelAttribute User user) {
+        userService.registerUser(user);
+        return ResponseEntity.ok(null);
+    }
+
 }
