@@ -5,6 +5,7 @@ import com.epam.training.sportsbetting.service.domainService.SportEventService;
 import com.epam.training.sportsbetting.service.dto.SportEventDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +24,11 @@ public class MainController {
         return "Welcome! :)";
     }
 
-/*
-    @Secured("ROLE_ADMIN")
-    @PostMapping("/alma/{i}")
+
+    @PostMapping("/admin/{i}")
     public Integer addSportEvent(@PathVariable(value = "i") Integer i) {
         return i;
     }
-*/
 
     @GetMapping("/admin/addsportevent")
     public ResponseEntity sportEventAdminPage() {
@@ -46,6 +45,7 @@ public class MainController {
         return ResponseEntity.ok(sportEventService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/bets")
     public ResponseEntity<List> bets() {
         return ResponseEntity.ok(betService.findAll());

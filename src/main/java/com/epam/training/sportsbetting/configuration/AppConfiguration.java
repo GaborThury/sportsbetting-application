@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 
 @Configuration
-@Import(DbConfiguration.class)
 @EnableAspectJAutoProxy
 @EnableJpaRepositories(basePackages = "com.epam.training.sportsbetting.repository")
 @ComponentScan(basePackages = "com.epam.training.sportsbetting")
