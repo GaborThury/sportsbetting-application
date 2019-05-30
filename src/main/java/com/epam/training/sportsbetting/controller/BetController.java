@@ -1,11 +1,10 @@
 package com.epam.training.sportsbetting.controller;
 
 import com.epam.training.sportsbetting.service.domainService.BetService;
+import com.epam.training.sportsbetting.service.dto.BetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,15 @@ public class BetController {
     @GetMapping("/")
     public ResponseEntity<List> bets() {
         return ResponseEntity.ok(betService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getBetById(@PathVariable(value = "id") Integer id) {
+        return ResponseEntity.ok(betService.findById(id));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity createBet(@RequestBody BetDto betDto) {
+        return ResponseEntity.ok(betService.save(betDto));
     }
 }

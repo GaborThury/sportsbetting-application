@@ -22,6 +22,10 @@ public class SportEventService {
         return toDto(sportEventRepository.findAll());
     }
 
+    public SportEvent findOneDirect(Integer id) {
+        return sportEventRepository.findById(id).orElse(null);
+    }
+
     private List<SportEventDto> toDto(List<SportEvent> sportEvents) {
         return sportEvents.stream()
                 .map(this::toDto)
@@ -65,7 +69,7 @@ public class SportEventService {
         if (sportEventDto.getBetIds() != null && !sportEventDto.getBetIds().isEmpty()) {
             sportEvent.setBets(sportEventDto.getBetIds()
                     .stream()
-                    .map(betService::findById)
+                    .map(betService::findOneDirect)
                     .collect(Collectors.toList())
             );
         }

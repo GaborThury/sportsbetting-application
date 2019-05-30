@@ -32,8 +32,6 @@ public class SportEvent {
     @Column
     private LocalDateTime endDate;
 
-
-
     @JsonIgnore
     @OneToMany(mappedBy = "sportEvent", fetch = FetchType.EAGER)
     private List<Bet> bets = new ArrayList<>();

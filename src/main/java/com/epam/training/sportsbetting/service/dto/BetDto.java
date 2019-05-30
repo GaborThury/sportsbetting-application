@@ -1,7 +1,6 @@
 package com.epam.training.sportsbetting.service.dto;
 
 import com.epam.training.sportsbetting.domain.BetType;
-import com.epam.training.sportsbetting.domain.SportEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +10,8 @@ import java.util.List;
 @Setter
 public class BetDto {
     private Integer id;
-    private SportEvent sportevent;
+    private Integer sporteventId;
     private String description;
     private BetType type;
-    private List<String> outcome;
+    private List<Integer> outcomeIds;
 }
