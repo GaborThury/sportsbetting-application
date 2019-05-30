@@ -16,7 +16,7 @@ public class AuthController {
     @PostMapping("/registration")
     public ResponseEntity registration(@ModelAttribute User user) {
         userService.registerUser(user);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.accepted().build();
     }
 
     @GetMapping("/activation/{code}")
@@ -26,6 +26,6 @@ public class AuthController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.accepted().build();
     }
 }

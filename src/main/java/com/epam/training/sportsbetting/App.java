@@ -33,7 +33,7 @@ public class App {
         App app = context.getBean(App.class);
         app.createPlayer();
         app.play();
-        app.calculateResults();
+        //app.calculateResults();
         app.printResults();
     }
 
@@ -75,10 +75,10 @@ public class App {
     }
 
 
-    private void calculateResults() {
+/*    private void calculateResults() {
         Result result = userBetService.generateResult();
         userBetService.summarizeResults(result, player);
-    }
+    }*/
 
     private void printResults() {
         io.printResults(player, sportBettingService.findAllWagers());

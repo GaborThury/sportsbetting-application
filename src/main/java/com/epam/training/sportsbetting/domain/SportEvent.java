@@ -1,9 +1,8 @@
 package com.epam.training.sportsbetting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,11 +14,14 @@ import java.util.List;
 //@ToString
 @Entity
 @Table(name = "SPORTEVENT")
-public abstract class SportEvent {
+public class SportEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column
+    private String type;
 
     @Column
     private String title;
@@ -30,9 +32,10 @@ public abstract class SportEvent {
     @Column
     private LocalDateTime endDate;
 
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "sportEvent", fetch = FetchType.EAGER)
     private List<Bet> bets = new ArrayList<>();
 
-    @Embedded
-    private Result result;
 }

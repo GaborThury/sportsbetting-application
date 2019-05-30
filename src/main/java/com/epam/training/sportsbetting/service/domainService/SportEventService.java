@@ -15,6 +15,9 @@ public class SportEventService {
     @Autowired
     private SportEventRepository sportEventRepository;
 
+    @Autowired
+    private BetService betService;
+
     public List<SportEventDto> findAll() {
         return toDto(sportEventRepository.findAll());
     }
@@ -33,6 +36,7 @@ public class SportEventService {
         SportEventDto sportEventDTO = new SportEventDto();
 
         sportEventDTO.setId(sportEvent.getId());
+        sportEventDTO.setType(sportEvent.getType());
         sportEventDTO.setTitle(sportEvent.getTitle());
         sportEventDTO.setStartDate(sportEvent.getStartDate());
         sportEventDTO.setEndDate(sportEvent.getEndDate());
@@ -41,5 +45,30 @@ public class SportEventService {
 
     public SportEventDto findById(Integer id) {
         return toDto(sportEventRepository.findById(id).orElse(null)) ;
+    }
+
+    public SportEvent save(SportEventDto sportEventDto) {
+        SportEvent entity = toEntity(sportEventDto);
+        return sportEventRepository.save(entity);
+    }
+
+    private SportEvent toEntity(SportEventDto sportEventDto) {
+        if (sportEventDto == null) return null;
+        SportEvent sportEvent = new SportEvent();
+
+        //sportEvent.setId(sportEventDto.getId());
+        sportEvent.setType(sportEventDto.getType());
+        sportEvent.setTitle(sportEventDto.getTitle());
+        sportEvent.setStartDate(sportEventDto.getStartDate());
+        sportEvent.setEndDate(sportEventDto.getEndDate());
+
+        if (sportEventDto.getBetIds() != null && !sportEventDto.getBetIds().isEmpty()) {
+            sportEvent.setBets(sportEventDto.getBetIds()
+                    .stream()
+                    .map(betService::findById)
+                    .collect(Collectors.toList())
+            );
+        }
+        return sportEvent;
     }
 }

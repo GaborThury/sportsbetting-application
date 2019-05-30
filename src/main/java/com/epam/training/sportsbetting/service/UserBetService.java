@@ -43,7 +43,7 @@ public class UserBetService {
         wager.setTimestampCreated(LocalDateTime.now());
         return wagerRepository.save(wager);
     }
-
+/*
     public Result generateResult() {
         Result result = new Result();
         List<Outcome> winnerOutcomes = new ArrayList<>();
@@ -55,7 +55,7 @@ public class UserBetService {
 
         result.setWinnerOutcomes(winnerOutcomes);
         return result;
-    }
+    }*/
 
     private int getRandomNumberInRange(int min, int max) {
         if (min >= max) {
@@ -65,7 +65,7 @@ public class UserBetService {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    public void summarizeResults(Result result, Player player) {
+/*    public void summarizeResults(Result result, Player player) {
         List<Integer> winnerOutcomeIdS = result.getWinnerOutcomes()
                 .stream()
                 .map(Outcome::getId)
@@ -79,7 +79,7 @@ public class UserBetService {
             wager.setProcessed(true);
             wagerRepository.save(wager);
         });
-    }
+    }*/
 
     private void updatePlayerBalance(Player player, Wager wager) {
         player.setBalance(player.getBalance()

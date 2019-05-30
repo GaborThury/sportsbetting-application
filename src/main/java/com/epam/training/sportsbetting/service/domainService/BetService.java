@@ -20,6 +20,10 @@ public class BetService {
         return toDto(betRepository.findAll());
     }
 
+    public Bet findById(Integer id) {
+        return betRepository.findById(id).orElse(null);
+    }
+
     private List<BetDto> toDto(List<Bet> bets) {
         return bets.stream()
                 .map(this::toDto)
@@ -33,7 +37,7 @@ public class BetService {
         BetDto betDTO = new BetDto();
 
         betDTO.setId(bet.getId());
-        betDTO.setSportevent(bet.getSportEvent().getTitle());
+        betDTO.setSportevent(bet.getSportEvent());
         betDTO.setDescription(bet.getDescription());
         betDTO.setType(bet.getType());
         betDTO.setOutcome(bet.getOutcomes()

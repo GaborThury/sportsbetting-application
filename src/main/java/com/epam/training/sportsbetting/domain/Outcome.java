@@ -26,6 +26,9 @@ public class Outcome {
     @Column
     private String description;
 
+    @Column
+    private Boolean isWon;
+
     @OneToMany(fetch = FetchType.EAGER)
     private List<OutcomeOdd> outcomeOdds = new ArrayList<>();
 }

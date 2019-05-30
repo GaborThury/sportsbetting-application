@@ -38,16 +38,18 @@ public final class TestDataCreator {
     private List<SportEvent> generateSportEvents() {
         List<SportEvent> sportEvents = new ArrayList<>();
 
-        FootballSportEvent footballSportEvent = new FootballSportEvent();
+        SportEvent footballSportEvent = new SportEvent();
         footballSportEvent.setTitle("Arsenal vs Chelsea");
+        footballSportEvent.setType("football");
         footballSportEvent.setStartDate(LocalDateTime.of(2020, 1, 1, 12, 0, 0));
         footballSportEvent.setEndDate(footballSportEvent.getStartDate().plusHours(2));
         footballSportEvent.setBets(generateBetsForArsenalVsChelsea(footballSportEvent));
 
         sportEvents.add(footballSportEvent);
 
-        TennisSportEvent tennisSportEvent = new TennisSportEvent();
+        SportEvent tennisSportEvent = new SportEvent();
         tennisSportEvent.setTitle("Djokovic vs Nadal");
+        tennisSportEvent.setType("tennis");
         tennisSportEvent.setStartDate(LocalDateTime.of(2019, 4, 18, 13, 0, 0));
         tennisSportEvent.setEndDate(tennisSportEvent.getStartDate().plusHours(4));
         tennisSportEvent.setBets(generateBetsForDjokovicVsNadal(tennisSportEvent));
